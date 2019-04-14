@@ -129,5 +129,5 @@ when 'monthStart'
   else
     Revision.new(ARGV.pop)
   end
-  puts "Merge outstanding branches for the month into #{v.currentMonth} and then branch off it to #{v.monthStart.to_s}"
+  puts "Merge outstanding branches for the month into #{v.currentMonth}, and #{v.currentMonth} to master and from master to #{v.monthStart.to_s}"
 end
