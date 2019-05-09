@@ -25,7 +25,7 @@ class Revision
   # if the "next version" we're wanting is for a hotfix, we're going to
   # call Revision#hotfix
   def nextVersion
-    newRevision(@year, @month, @revCount+1)
+    newRevision(@year, @month, @revCount.nil? ? 1 : @revCount + 1)
   end
 
   def hotfix
