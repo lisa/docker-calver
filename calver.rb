@@ -63,18 +63,8 @@ end
 MODES = [ 'help', 'hotfix', 'nextVersion', 'monthStart' ].freeze
 
 
-OptionParser.new do |opts|
-  opts.banner = "Usage: calver.rb [options]"
-
-  opts.on("--mode=MODE") do |mode|
-    if MODES.include?(mode)
-      options.merge!({:mode => mode})
-    else
-      raise ArgumentError.new("Invalid Mode #{mode}, expecting one of #{MODES}")
-    end
-  end
-  opts.on("--help") do |help|
-    puts <<-EOF
+def print_help
+  puts <<-EOF
 CalVer for Git
 Usage: #{__FILE__} --mode=<help|nextVersion|hotfix|monthStart> [previous version]
 
@@ -96,6 +86,20 @@ Prepare for next month: #{__FILE__} --mode=monthStart
 Generates the next head branch for the next month, and git reconciliation
 instructions.
 EOF
+end
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: calver.rb [options]"
+
+  opts.on("--mode=MODE") do |mode|
+    if MODES.include?(mode)
+      options.merge!({:mode => mode})
+    else
+      raise ArgumentError.new("Invalid Mode #{mode}, expecting one of #{MODES}")
+    end
+  end
+  opts.on("--help") do |help|
+  print_help
   end
 end.parse!
 
@@ -130,4 +134,6 @@ when 'monthStart'
     Revision.new(ARGV.pop)
   end
   puts "Merge outstanding branches for the month into #{v.currentMonth}, and #{v.currentMonth} to master and from master to #{v.monthStart.to_s}"
+else
+  print_help
 end
